@@ -6,6 +6,11 @@ parser.add_argument('--data_path',
                     default="Market-1501-v15.09.15",
                     help='path of Market-1501-v15.09.15')
 
+parser.add_argument('--gpu_devices',
+                    default="0",
+                    help='the gpu devices visible to pytorch')
+
+
 parser.add_argument('--mode',
                     default='train', choices=['train', 'evaluate', 'vis'],
                     help='train or evaluate ')

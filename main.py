@@ -17,6 +17,8 @@ from loss import Loss
 from utils.get_optimizer import get_optimizer
 from utils.extract_feature import extract_feature
 from utils.metrics import mean_ap, cmc, re_ranking
+from tqdm import tqdm
+import torch.nn as nn
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
@@ -28,7 +30,7 @@ class Main():
         self.query_loader = data.query_loader
         self.testset = data.testset
         self.queryset = data.queryset
-
+        model = nn.DataParallel(model)
         self.model = model.to('cuda')
         self.loss = loss
         self.optimizer = get_optimizer(model)
@@ -37,9 +39,9 @@ class Main():
     def train(self):
 
         self.scheduler.step()
-
+        
         self.model.train()
-        for batch, (inputs, labels) in enumerate(self.train_loader):
+        for batch, (inputs, labels) in tqdm( enumerate(self.train_loader)):
             inputs = inputs.to('cuda')
             labels = labels.to('cuda')
             self.optimizer.zero_grad()
